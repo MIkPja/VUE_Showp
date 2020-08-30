@@ -28,8 +28,6 @@
           <template slot-scope="scope">
             <el-switch
               v-model="scope.row.mg_state"
-              active-color="#13ce66"
-              inactive-color="#ff4949"
               @change="userStateChange(scope.row)"
             ></el-switch>
           </template>
@@ -375,7 +373,7 @@ export default {
       })
       if (confirm === 'confirm') {
         // 发送请求
-        const { data: res } = await this.$http.delete('roles/' + id)
+        const { data: res } = await this.$http.delete('users/' + id)
         // 判断删除是否成功
         if (res.meta.status !== 200) {
           return this.$message.error('删除用户信息失败')
