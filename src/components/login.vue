@@ -39,13 +39,14 @@
 </template>
 
 <script>
+
 export default {
   data () {
     return {
       // 表单数据
       loginForm: {
-        username: '',
-        password: ''
+        username: 'admin',
+        password: '123456'
       },
       // 表单的验证规则对象
       loginFormRules: {
@@ -67,6 +68,7 @@ export default {
       }
     }
   },
+
   // 添加行为，
   methods: {
     // 点击重置登录表单
