@@ -18,7 +18,7 @@
           <el-button type="primary" @click="addDialogVisible = true">添加用户</el-button>
         </el-col>
       </el-row>
-      <el-table :data="userlist" border stripe>
+      <el-table :data="userlist" border>
         <el-table-column label="#" type="index"></el-table-column>
         <el-table-column label="姓名" width="180" prop="username"></el-table-column>
         <el-table-column label="邮箱" width="180" prop="email"></el-table-column>
@@ -26,10 +26,7 @@
         <el-table-column label="角色" prop="role_name"></el-table-column>
         <el-table-column label="状态" prop="mg_state" width="110">
           <template slot-scope="scope">
-            <el-switch
-              v-model="scope.row.mg_state"
-              @change="userStateChange(scope.row)"
-            ></el-switch>
+            <el-switch v-model="scope.row.mg_state" @change="userStateChange(scope.row)"></el-switch>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="180">
@@ -41,7 +38,12 @@
               @click="eeditDialogVisible(scope.row.id)"
             ></el-button>
             <!-- 删除按钮 -->
-            <el-button @click="removeUserById(scope.row.id)" size="mini" type="danger" icon="el-icon-delete"></el-button>
+            <el-button
+              @click="removeUserById(scope.row.id)"
+              size="mini"
+              type="danger"
+              icon="el-icon-delete"
+            ></el-button>
             <el-tooltip
               class="item"
               effect="dark"
@@ -49,7 +51,12 @@
               content="分配角色"
               placement="top"
             >
-              <el-button size="mini" type="warning" icon="el-icon-setting"></el-button>
+              <el-button
+                @click="serRole(scope.row)"
+                size="mini"
+                type="warning"
+                icon="el-icon-setting"
+              ></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -136,6 +143,27 @@
         <el-button type="primary" @click.stop="editUser">确 定</el-button>
       </span>
     </el-dialog>
+
+    <el-dialog title="分配角色" :visible.sync="setRoleDialogVisible" width="34%">
+      <h3>当前的用户名: {{userInfo.username}}</h3>
+      <h3>当前的角色: {{userInfo.role_name}}</h3>
+      <h3>
+        选择的角色:
+        <el-select v-model="selectedRole" placeholder="请选择">
+          <el-option
+            width="100"
+            v-for="v in roleslist"
+            :key="v.id"
+            :label="v.roleName"
+            :value="v.id"
+          ></el-option>
+        </el-select>
+      </h3>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="setRoleDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="seveSrole">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -165,6 +193,8 @@ export default {
       cb(new Error('请输入合法的手机号'))
     }
     return {
+      userInfo: '',
+      roleslist: '',
       // 获取用户列表参数对象
       queryInfo: {
         query: '',
@@ -172,6 +202,7 @@ export default {
         pagesize: 5
       },
       userlist: [],
+      selectedRole: '',
       total: 0,
       // 添加用户数据
       addDialogVisible: false,
@@ -209,6 +240,7 @@ export default {
         email: 'al1345678@lookout.com',
         mobile: '13894665322'
       },
+      setRoleDialogVisible: false,
       //  编辑用户数据
       editDialogVisible: false,
       editFormRules: {
@@ -294,6 +326,26 @@ export default {
     hanldeAddDialogClose () {
       this.$refs.addFormRef.resetFields()
     },
+    // 分配角色
+    async serRole (userInfo) {
+      this.userInfo = userInfo
+      const { data: res } = await this.$http.get('roles')
+      this.roleslist = res.data
+      this.setRoleDialogVisible = true
+    },
+    // 分配角色保存
+    async seveSrole () {
+      await this.$http.put('users/' + this.userInfo.id + '/role', {
+        rid: this.selectedRole
+      })
+      this.$message({
+        message: '分配角色成功',
+        type: 'success',
+        showClose: true
+      })
+      this.getUserList()
+      this.setRoleDialogVisible = false
+    },
     // 添加用户
     addUser () {
       // 表单预校验
@@ -366,11 +418,15 @@ export default {
     // 根据ID删除对应的用户信息
     async removeUserById (id) {
       // 提示用户是否删除
-      const confirm = await this.$confirm('此操作将永久删除该用户信息, 是否继续?', '提示', {
-        confirmButtonText: '确定删除',
-        cancelButtonText: '取消操作',
-        type: 'warning'
-      })
+      const confirm = await this.$confirm(
+        '此操作将永久删除该用户信息, 是否继续?',
+        '提示',
+        {
+          confirmButtonText: '确定删除',
+          cancelButtonText: '取消操作',
+          type: 'warning'
+        }
+      )
       if (confirm === 'confirm') {
         // 发送请求
         const { data: res } = await this.$http.delete('users/' + id)
@@ -422,5 +478,12 @@ export default {
 }
 .el-input__inner {
   user-select: none;
+}
+
+ul {
+  border-radius: 3px !important;
+}
+h3 {
+  text-indent: 2em;
 }
 </style>

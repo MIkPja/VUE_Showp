@@ -4,9 +4,41 @@ html,body,#app{
 	height: 100%;
 	margin: 0;
 	padding: 0; 
+	min-width: 1366px;
   }
 
   .el-card {
 	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15) !important;
-	border: 1px solid  #cccccc  !important;
+	border:1px solid #ffffff !important;
+	background-color: #79554861 !important;
+	color: black;
     }
+    .el-breadcrumb {
+	    margin-bottom: 15px;
+    }
+
+    .el-main {
+	    background-color: #009688 !important;
+	color: black;
+
+    }
+.el-table {
+	border-radius: 6px;
+}
+.el-table tr {
+	background-color: #3367dc61 !important;
+	color: black;
+}
+th.is-leaf {
+	background-color: #036bbd !important;
+	color: black;
+}
+
+.el-breadcrumb__inner {
+
+	color: black !important;
+  }
+  header {
+	  background-color: #290903 !important;
+	  border-bottom: 1px solid #055e56 !important;
+  }

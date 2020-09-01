@@ -6,7 +6,7 @@
         <!-- 黑马logo -->
         <img src="..//assets/heima.png" alt />
         <!-- 顶部标题 -->
-        <span>电商后台管理系统</span>
+        <span>支付宝后台管理系统</span>
       </div>
       <el-button type="info" @click="logout">退出</el-button>
     </el-header>
@@ -112,6 +112,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+img {
+  width: 43%;
+}
 .toggle-button {
   background-color: #4a5064;
   font-size: 10px;
@@ -138,17 +141,20 @@ export default {
   height: 100%;
 }
 .el-header {
-  background-color: #373d41;
+  background-color: #b6e3f8 !important;
   display: flex;
   justify-content: space-between;
   padding-left: 0;
   align-items: center;
-  color: #fff;
+  color:#0e0e0e;
   font-size: 20px;
+  font-weight: 600;
   > div {
     display: flex;
     align-items: center;
+    margin-left: 50px;
     span {
+      width: 200px;
       margin-left: 15px;
     }
   }
