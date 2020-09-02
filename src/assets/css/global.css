@@ -12,6 +12,7 @@ html,body,#app{
 	border:1px solid #ffffff !important;
 	background-color: #79554861 !important;
 	color: black;
+	border-radius: 5px !important;
     }
     .el-breadcrumb {
 	    margin-bottom: 15px;
