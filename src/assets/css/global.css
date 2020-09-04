@@ -5,33 +5,40 @@ html,body,#app{
 	margin: 0;
 	padding: 0; 
 	min-width: 1366px;
+	
   }
-
-  .el-card {
+  .el-alert {
+	font-size: 20px;
+    }
+    #tab-0,
+    #tab-1 {
+	    color: black;
+	    font-size: 16px;
+    }
+  .el-card,
+  .el-tabs {
 	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15) !important;
 	border:1px solid #ffffff !important;
-	background-color: #79554861 !important;
 	color: black;
 	border-radius: 5px !important;
+	padding: 15px;
+    }
+    .el-tabs {
     }
     .el-breadcrumb {
 	    margin-bottom: 15px;
     }
 
     .el-main {
-	    background-color: #009688 !important;
 	color: black;
-
     }
 .el-table {
 	border-radius: 6px;
 }
 .el-table tr {
-	background-color: #3367dc61 !important;
 	color: black;
 }
 th.is-leaf {
-	background-color: #036bbd !important;
 	color: black;
 }
 
@@ -40,6 +47,5 @@ th.is-leaf {
 	color: black !important;
   }
   header {
-	  background-color: #290903 !important;
 	  border-bottom: 1px solid #055e56 !important;
   }

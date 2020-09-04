@@ -154,6 +154,7 @@ export default {
       addRoleDialogVisible: false,
       editRoleDialogVisible: false,
       cateList: [],
+      tableData: [],
       // 父级分类列表
       ParrentCateList: [],
       // 级联选择框获取到的ID
@@ -187,6 +188,7 @@ export default {
       const { data: res } = await this.$http.get('categories', {
         params: this.userInfo
       })
+
       // 存储请求到的数据
       this.cateList = res.data.result
       // 存储请求到的total值 (总条数)
