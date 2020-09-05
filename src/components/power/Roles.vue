@@ -59,7 +59,7 @@
         <el-table-column label="角色描述" prop="roleDesc"></el-table-column>
         <el-table-column label="操作" width="400">
           <template slot-scope="scope">
-            <el-button size="mini" type="primary" icon="el-icon-edit">编辑</el-button>
+            <el-button @click="editUsers(scope)" size="mini" type="primary" icon="el-icon-edit">编辑</el-button>
             <el-button size="mini" type="danger" icon="el-icon-delete">删除</el-button>
             <el-button
               @click="showSerRightDialog(scope.row)"
@@ -94,6 +94,32 @@
         <el-button type="primary" @click="setRight">确 定</el-button>
       </span>
     </el-dialog>
+    <!-- 编辑权限 -->
+    <el-dialog
+      title="权限编辑"
+      :visible.sync="editUserDialogVisible"
+      width="25%"
+    >
+      <!-- 输入框 -->
+      <el-form
+        :model="UserList"
+        :rules="rulesUser"
+        ref="UserFormRef"
+        label-width="100px"
+        class="demo-ruleForm"
+      >
+        <el-form-item label="用户名" prop="roleName">
+          <el-input v-model="UserList.roleName"></el-input>
+        </el-form-item>
+        <el-form-item label="角色描述" prop="roleName">
+          <el-input v-model="UserList.roleDesc"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editUserDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="setUsers">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -101,12 +127,20 @@
 export default {
   data () {
     return {
+      rulesUser: {
+        roleName: [
+          { required: true, message: '输入不能为空', trigger: 'blur' },
+          { min: 2, max: 15, message: '长度在 3 到 15 个字符', trigger: 'blur' }
+        ]
+      },
+      UserList: {},
       rolelist: [],
       rightsList: [],
       treeProps: {
         children: 'children',
         label: 'authName'
       },
+      editUserDialogVisible: false,
       // 默认选中的节点ID值
       defKeys: [],
       roleId: undefined,
@@ -117,6 +151,24 @@ export default {
     this.getRolesList()
   },
   methods: {
+    async setUsers () {
+      const { data: res } = await this.$http.put('roles/' + this.UserList.roleId, { roleName: this.UserList.roleName, roleDesc: this.UserList.roleDesc })
+      console.log(this.UserList.roleId)
+      console.log(this.UserList.roleName)
+      if (res.meta.status !== 200) {
+        return this.$message.error('编辑用户权限失败!')
+      }
+      this.$message.success('编辑用户权限成功!')
+      this.getRolesList()
+      this.editUserDialogVisible = false
+    },
+    // 编辑用户权限
+    async editUsers (scope) {
+      const { data: res } = await this.$http.get('roles/' + scope.row.id)
+      console.log(res)
+      this.UserList = res.data
+      this.editUserDialogVisible = true
+    },
     async getRolesList () {
       const { data: res } = await this.$http.get('roles')
       if (res.meta.status !== 200) {
